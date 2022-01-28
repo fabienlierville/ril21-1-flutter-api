@@ -11,6 +11,7 @@ class PageHome extends StatefulWidget {
 
 class _PageHomeState extends State<PageHome> {
   List<Movie>? movies;
+  StatusApi statusApi = StatusApi.chargement;
 
   @override
   void initState() {
@@ -30,13 +31,30 @@ class _PageHomeState extends State<PageHome> {
           )
         ],
       ),
-      body: Center(),
+      body: bodynamic(),
     );
   }
 
+  Widget bodynamic(){
+    if(statusApi == StatusApi.chargement){
+      return Center(child: CircularProgressIndicator(),);
+    }
+
+    if(statusApi == StatusApi.error){
+      return Center(child: Text("Error"),);
+    }
+
+    return Center(child: Text("ListView Builder"),);
+
+  }
+
+
   Future<void> callFilms() async{
     MovieApi movieApi = MovieApi();
-    //Todo écran pour faire patienter
+    setState(() {
+      statusApi = StatusApi.chargement;
+    });
+    await Future.delayed(Duration(seconds: 3));
     Map<String,dynamic> mapMovies =  await movieApi.getPopular();
     if(mapMovies["code"] == 200){
       setState(() {
@@ -47,9 +65,19 @@ class _PageHomeState extends State<PageHome> {
         print(movie.title);
       });
 
-      //Todo affichge la liste des films
+      setState(() {
+        statusApi = StatusApi.ok;
+      });
     }else{
-      //Todo
+      setState(() {
+        statusApi = StatusApi.error;
+      });
     }
   }
+}
+
+enum StatusApi {
+  chargement,
+  error,
+  ok
 }
