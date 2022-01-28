@@ -1,3 +1,5 @@
+import 'package:api/api/movie_api.dart';
+import 'package:api/models/movie.dart';
 import 'package:flutter/material.dart';
 
 class PageHome extends StatefulWidget {
@@ -8,6 +10,8 @@ class PageHome extends StatefulWidget {
 }
 
 class _PageHomeState extends State<PageHome> {
+  List<Movie>? movies;
+
   @override
   void initState() {
     callFilms();
@@ -31,6 +35,21 @@ class _PageHomeState extends State<PageHome> {
   }
 
   Future<void> callFilms() async{
-    //Todo
+    MovieApi movieApi = MovieApi();
+    //Todo écran pour faire patienter
+    Map<String,dynamic> mapMovies =  await movieApi.getPopular();
+    if(mapMovies["code"] == 200){
+      setState(() {
+        movies = Movie.moviesFromJson(mapMovies["body"]);
+      });
+
+      movies?.forEach((Movie movie) {
+        print(movie.title);
+      });
+
+      //Todo affichge la liste des films
+    }else{
+      //Todo
+    }
   }
 }
