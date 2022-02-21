@@ -1,5 +1,6 @@
 import 'package:api/api/movie_api.dart';
 import 'package:api/models/movie.dart';
+import 'package:api/widgets/movie_list.dart';
 import 'package:flutter/material.dart';
 
 class PageHome extends StatefulWidget {
@@ -44,7 +45,7 @@ class _PageHomeState extends State<PageHome> {
       return Center(child: Text("Error"),);
     }
 
-    return Center(child: Text("ListView Builder"),);
+    return Center(child: MovieList(movies: movies!,),);
 
   }
 
@@ -59,15 +60,13 @@ class _PageHomeState extends State<PageHome> {
     if(mapMovies["code"] == 200){
       setState(() {
         movies = Movie.moviesFromJson(mapMovies["body"]);
+        statusApi = StatusApi.ok;
       });
 
       movies?.forEach((Movie movie) {
         print(movie.title);
       });
 
-      setState(() {
-        statusApi = StatusApi.ok;
-      });
     }else{
       setState(() {
         statusApi = StatusApi.error;
