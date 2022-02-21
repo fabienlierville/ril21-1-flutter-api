@@ -23,10 +23,22 @@ class MovieList extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(movie.title),
-                      Image.network(movie.imageUrl)
+                      Image.network(movie.getImageUrl())
                     ],
                   ),
-                )
+                ),
+                Container(
+                  width: size.width / 2.5,
+                  child: Column(
+                    children: [
+                      Text(movie.releaseDate.toString()),
+                      Container(
+                        height: size.height / 4,
+                        child: Text(movie.overview, overflow: TextOverflow.fade),
+                      )
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

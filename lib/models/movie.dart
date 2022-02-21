@@ -27,5 +27,9 @@ class Movie {
     return l;
   }
 
+  String getImageUrl(){
+    return "https://image.tmdb.org/t/p/w500${this.imageUrl}";
+  }
+
 
 }
