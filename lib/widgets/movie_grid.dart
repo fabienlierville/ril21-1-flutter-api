@@ -15,6 +15,7 @@ class MovieGrid extends StatelessWidget {
       itemBuilder: (context, index){
         Movie movie = movies[index];
         return Container(
+
           child: Image.network(movie.getImageUrl()),
         );
       },

@@ -28,15 +28,32 @@ class _PageHomeState extends State<PageHome> {
         title: Text("Liste des films"),
         actions: [
           IconButton(
-              onPressed: callFilms,
+              onPressed: (){
+                setState(() {
+                });
+              },
               icon: Icon(Icons.refresh)
           )
         ],
       ),
-      body: bodynamic(),
+      body: FutureBuilder<List<Movie>>(
+        future: callFilms(),
+        builder: (context,AsyncSnapshot<List<Movie>> snapshot){
+          print(snapshot);
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Center(child: CircularProgressIndicator(),);
+          }
+          if(snapshot.hasError){
+            return Center(child: Text("Error"));
+          }
+          List<Movie>? moviList = snapshot.data;
+          return MovieList(movies: moviList!);
+        },
+      ),
     );
   }
 
+  /*
   Widget bodynamic(){
     if(statusApi == StatusApi.chargement){
       return Center(child: CircularProgressIndicator(),);
@@ -45,37 +62,24 @@ class _PageHomeState extends State<PageHome> {
     if(statusApi == StatusApi.error){
       return Center(child: Text("Error"),);
     }
-    //TODO : Tester si Portrait/Paysage et afficher ListView ou GridView
     if(MediaQuery.of(context).orientation == Orientation.landscape){
       return Center(child: MovieGrid(movies: movies!,),);
     }
     return Center(child: MovieList(movies: movies!,),);
 
   }
+   */
 
 
-  Future<void> callFilms() async{
+  Future<List<Movie>> callFilms() async{
+    List<Movie> moviList = [];
     MovieApi movieApi = MovieApi();
-    setState(() {
-      statusApi = StatusApi.chargement;
-    });
     await Future.delayed(Duration(seconds: 3));
     Map<String,dynamic> mapMovies =  await movieApi.getPopular();
     if(mapMovies["code"] == 200){
-      setState(() {
-        movies = Movie.moviesFromJson(mapMovies["body"]);
-        statusApi = StatusApi.ok;
-      });
-
-      movies?.forEach((Movie movie) {
-        print(movie.title);
-      });
-
-    }else{
-      setState(() {
-        statusApi = StatusApi.error;
-      });
+      moviList = Movie.moviesFromJson(mapMovies["body"]);
     }
+    return moviList;
   }
 }
 
