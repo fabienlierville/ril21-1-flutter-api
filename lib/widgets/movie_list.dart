@@ -17,6 +17,7 @@ class MovieList extends StatelessWidget {
           child: Card(
             elevation: 10,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
                   width: size.width / 2.5,

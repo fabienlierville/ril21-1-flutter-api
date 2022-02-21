@@ -44,7 +44,7 @@ class _PageHomeState extends State<PageHome> {
     if(statusApi == StatusApi.error){
       return Center(child: Text("Error"),);
     }
-
+    //TODO : Tester si Portrait/Paysage et afficher ListView ou GridView
     return Center(child: MovieList(movies: movies!,),);
 
   }
