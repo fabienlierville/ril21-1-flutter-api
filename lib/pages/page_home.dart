@@ -46,7 +46,9 @@ class _PageHomeState extends State<PageHome> {
       return Center(child: Text("Error"),);
     }
     //TODO : Tester si Portrait/Paysage et afficher ListView ou GridView
-    return Center(child: MovieGrid(movies: movies!,),);
+    if(MediaQuery.of(context).orientation == Orientation.landscape){
+      return Center(child: MovieGrid(movies: movies!,),);
+    }
     return Center(child: MovieList(movies: movies!,),);
 
   }
