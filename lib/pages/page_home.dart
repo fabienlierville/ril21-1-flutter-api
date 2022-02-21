@@ -1,5 +1,6 @@
 import 'package:api/api/movie_api.dart';
 import 'package:api/models/movie.dart';
+import 'package:api/widgets/movie_grid.dart';
 import 'package:api/widgets/movie_list.dart';
 import 'package:flutter/material.dart';
 
@@ -45,6 +46,7 @@ class _PageHomeState extends State<PageHome> {
       return Center(child: Text("Error"),);
     }
     //TODO : Tester si Portrait/Paysage et afficher ListView ou GridView
+    return Center(child: MovieGrid(movies: movies!,),);
     return Center(child: MovieList(movies: movies!,),);
 
   }
